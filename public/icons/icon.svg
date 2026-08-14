@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="flagGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dc2626" />
+      <stop offset="50%" stop-color="#b91c1c" />
+      <stop offset="50%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="512" height="512" rx="108" fill="#ffffff" />
+  <rect x="16" y="16" width="480" height="480" rx="92" fill="url(#flagGrad)" stroke="#cbd5e1" stroke-width="8" />
+
+  <!-- Gold Outer Frame -->
+  <rect x="24" y="24" width="464" height="464" rx="84" fill="none" stroke="url(#goldGrad)" stroke-width="12" />
+
+  <!-- Number 17 Emblem -->
+  <text x="256" y="340" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="240" text-anchor="middle" fill="#0f172a" opacity="0.15">17</text>
+  <text x="252" y="336" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="240" text-anchor="middle" fill="#f59e0b">17</text>
+  <text x="256" y="332" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="240" text-anchor="middle" fill="#ffffff">17</text>
+
+  <!-- Star Icon -->
+  <path d="M256 50 L275 90 L320 95 L285 125 L295 170 L256 145 L217 170 L227 125 L192 95 L237 90 Z" fill="url(#goldGrad)" />
+</svg>

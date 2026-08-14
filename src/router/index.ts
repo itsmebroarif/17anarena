@@ -1,0 +1,60 @@
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router';
+import Dashboard from '../pages/Dashboard.vue';
+import Competitions from '../pages/Competitions.vue';
+import Registration from '../pages/Registration.vue';
+import WaitingLounge from '../pages/WaitingLounge.vue';
+import CompetitionBoard from '../pages/CompetitionBoard.vue';
+import Scoring from '../pages/Scoring.vue';
+import Results from '../pages/Results.vue';
+import ResultingPoint from '../pages/ResultingPoint.vue';
+import HallOfFame from '../pages/HallOfFame.vue';
+import Certificates from '../pages/Certificates.vue';
+import CommitteeCards from '../pages/CommitteeCards.vue';
+import LuckySpin from '../pages/LuckySpin.vue';
+import ImportExport from '../pages/ImportExport.vue';
+import Settings from '../pages/Settings.vue';
+import SuperUserStudio from '../pages/SuperUserStudio.vue';
+import Tutorial from '../pages/Tutorial.vue';
+import MoneyManagement from '../pages/MoneyManagement.vue';
+import RabManagement from '../pages/RabManagement.vue';
+import RundownManagement from '../pages/RundownManagement.vue';
+import EasyMode from '../pages/EasyMode.vue';
+
+const isOfflineOrElectron =
+  typeof window !== 'undefined' &&
+  (window.location.protocol === 'file:' ||
+   window.navigator.userAgent.toLowerCase().includes('electron') ||
+   !!(window as any).electronAPI);
+
+const routes = [
+  { path: '/', name: 'Dashboard', component: Dashboard },
+  { path: '/easy-mode', name: 'EasyMode', component: EasyMode },
+  { path: '/tutorial', name: 'Tutorial', component: Tutorial },
+  { path: '/competitions', name: 'Competitions', component: Competitions },
+  { path: '/registration', name: 'Registration', component: Registration },
+  { path: '/waiting-lounge', name: 'WaitingLounge', component: WaitingLounge },
+  { path: '/competition-board', name: 'CompetitionBoard', component: CompetitionBoard },
+  { path: '/scoring', name: 'Scoring', component: Scoring },
+  { path: '/results', name: 'Results', component: Results },
+  { path: '/resulting-point', name: 'ResultingPoint', component: ResultingPoint },
+  { path: '/hall-of-fame', name: 'HallOfFame', component: HallOfFame },
+  { path: '/certificates', name: 'Certificates', component: Certificates },
+  { path: '/committee', name: 'CommitteeCards', component: CommitteeCards },
+  { path: '/money', name: 'MoneyManagement', component: MoneyManagement },
+  { path: '/rab', name: 'RabManagement', component: RabManagement },
+  { path: '/rundown', name: 'RundownManagement', component: RundownManagement },
+  { path: '/lucky-spin', name: 'LuckySpin', component: LuckySpin },
+  { path: '/superuser', name: 'SuperUserStudio', component: SuperUserStudio },
+  { path: '/import-export', name: 'ImportExport', component: ImportExport },
+  { path: '/settings', name: 'Settings', component: Settings }
+];
+
+const router = createRouter({
+  history: isOfflineOrElectron ? createWebHashHistory() : createWebHistory(),
+  routes,
+  scrollBehavior() {
+    return { top: 0 };
+  }
+});
+
+export default router;

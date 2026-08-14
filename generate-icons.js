@@ -1,0 +1,24 @@
+import fs from 'fs';
+import path from 'path';
+
+// Minimal PNG generator for PWA icons
+function createPNG(width, height) {
+  // SVG string for icon
+  const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 512 512">
+    <rect width="512" height="512" rx="100" fill="#dc2626"/>
+    <rect x="0" y="256" width="512" height="256" rx="0" fill="#ffffff"/>
+    <rect x="0" y="0" width="512" height="512" rx="100" fill="none" stroke="#f59e0b" stroke-width="24"/>
+    <text x="256" y="340" font-family="sans-serif" font-weight="900" font-size="220" text-anchor="middle" fill="#000000" opacity="0.2">17</text>
+    <text x="256" y="330" font-family="sans-serif" font-weight="900" font-size="220" text-anchor="middle" fill="#f59e0b">17</text>
+  </svg>`;
+  return svgString;
+}
+
+const dir = path.join(process.cwd(), 'public', 'icons');
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir, { recursive: true });
+}
+
+fs.writeFileSync(path.join(dir, 'icon-192.svg'), createPNG(192, 192));
+fs.writeFileSync(path.join(dir, 'icon-512.svg'), createPNG(512, 512));
+console.log('SVG Icons created in public/icons');
