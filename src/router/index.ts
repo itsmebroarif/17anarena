@@ -57,4 +57,34 @@ const router = createRouter({
   }
 });
 
+// Committee password guard for administrative routes
+const committeeProtectedPaths = [
+  '/scoring',
+  '/certificates',
+  '/money',
+  '/rab',
+  '/rundown',
+  '/settings',
+  '/superuser'
+];
+
+router.beforeEach(async (to, _from, next) => {
+  if (committeeProtectedPaths.includes(to.path)) {
+    // Dynamic import to avoid Pinia store creation before app initialization
+    const { useArenaStore } = await import('../stores/arenaStore');
+    const store = useArenaStore();
+    
+    if (!store.isCommitteeUnlocked) {
+      const unlocked = await store.requestCommitteeAccess();
+      if (unlocked) {
+        next();
+      } else {
+        next({ path: '/competitions' });
+      }
+      return;
+    }
+  }
+  next();
+});
+
 export default router;

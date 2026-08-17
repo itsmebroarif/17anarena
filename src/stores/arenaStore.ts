@@ -41,7 +41,8 @@ export const useArenaStore = defineStore('arena', {
     rundownItems: [] as RundownItem[],
     globalSearchQuery: '',
     isInitialized: false,
-    isDarkMode: false
+    isDarkMode: false,
+    isCommitteeUnlocked: false
   }),
 
   getters: {
@@ -113,7 +114,15 @@ export const useArenaStore = defineStore('arena', {
     init() {
       StorageService.initializeDefaults();
       const data = StorageService.getAllData();
-      this.competitions = data.competitions;
+      if (!data.competitions || data.competitions.length === 0) {
+        this.competitions = DEFAULT_17AN_TEMPLATE_COMPETITIONS.map(c => ({
+          ...c,
+          id: 'comp-' + uuidv4().substring(0, 8)
+        }));
+        StorageService.set('17an_competitions', this.competitions);
+      } else {
+        this.competitions = data.competitions;
+      }
       this.participants = data.participants;
       this.registrations = data.registrations;
       this.scores = data.scores;
@@ -159,6 +168,120 @@ export const useArenaStore = defineStore('arena', {
       const savedDarkMode = StorageService.get<boolean>('17an_darkmode', false);
       this.isDarkMode = savedDarkMode;
       this.applyDarkMode(this.isDarkMode);
+
+      // Check session storage for committee unlocked status
+      try {
+        if (typeof sessionStorage !== 'undefined') {
+          this.isCommitteeUnlocked = sessionStorage.getItem('17an_committee_unlocked') === 'true';
+        }
+      } catch (e) {
+        // ignore
+      }
+    },
+
+    unlockCommittee(password: string): boolean {
+      if (password === 'arif_lucu') {
+        this.isCommitteeUnlocked = true;
+        try {
+          if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('17an_committee_unlocked', 'true');
+          }
+        } catch (e) {}
+        this.logActivity('Akses Panitia Terbuka', 'Password panitia (arif_lucu) berhasil diverifikasi.');
+        return true;
+      }
+      return false;
+    },
+
+    lockCommittee() {
+      this.isCommitteeUnlocked = false;
+      try {
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.removeItem('17an_committee_unlocked');
+        }
+      } catch (e) {}
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: 'Menu Panitia Dikunci',
+        text: 'Akses administrasi panitia berhasil dikunci kembali.',
+        showConfirmButton: false,
+        timer: 2000
+      });
+      this.logActivity('Akses Panitia Dikunci', 'Menu panitia telah dikunci kembali.');
+    },
+
+    async requestCommitteeAccess(callback?: () => void) {
+      if (this.isCommitteeUnlocked) {
+        if (callback) callback();
+        return true;
+      }
+
+      const result = await Swal.fire({
+        title: '🔒 Akses Khusus Panitia',
+        text: 'Masukkan kata sandi panitia untuk mengakses menu administrasi, input skor, dan kas:',
+        input: 'password',
+        inputPlaceholder: 'Masukkan sandi panitia...',
+        inputAttributes: {
+          autocapitalize: 'off',
+          autocorrect: 'off',
+          autocomplete: 'current-password'
+        },
+        showCancelButton: true,
+        confirmButtonText: '<i class="bi bi-unlock-fill me-1"></i> Buka Akses Panitia',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b',
+        showLoaderOnConfirm: true,
+        preConfirm: (inputPass) => {
+          if (!inputPass) {
+            Swal.showValidationMessage('Kata sandi tidak boleh kosong');
+            return false;
+          }
+          if (inputPass !== 'arif_lucu') {
+            Swal.showValidationMessage('❌ Kata sandi panitia salah! Silakan coba lagi.');
+            return false;
+          }
+          return true;
+        }
+      });
+
+      if (result.isConfirmed) {
+        this.unlockCommittee('arif_lucu');
+        await Swal.fire({
+          icon: 'success',
+          title: 'Akses Panitia Terbuka! 🎉',
+          text: 'Selamat bertugas! Seluruh menu panitia (skor, sertifikat, kas, RAB & rundown) kini dapat diakses.',
+          confirmButtonColor: '#16a34a',
+          timer: 2500,
+          timerProgressBar: true
+        });
+        if (callback) callback();
+        return true;
+      }
+      return false;
+    },
+
+    loadFinalData2026() {
+      StorageService.initializeDefaults(true);
+      const data = StorageService.getAllData();
+      this.competitions = data.competitions;
+      this.participants = data.participants;
+      this.registrations = data.registrations;
+      this.scores = data.scores;
+      this.winners = data.winners;
+      this.certificates = data.certificates;
+      this.doorprizes = data.doorprizes;
+      this.settings = data.settings;
+      this.history = data.history;
+      this.waTemplates = data.waTemplates;
+      this.committees = data.committees;
+      this.moneyTransactions = data.moneyTransactions;
+      this.rabItems = data.rabItems;
+      this.rundownItems = data.rundownItems;
+      this.saveAll();
+      this.logActivity('Muat Data Final 2026', 'Data final 17 Agustus 2026 Bojong Lio berhasil dimuat.');
     },
 
     toggleDarkMode(force?: boolean) {

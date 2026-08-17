@@ -9,22 +9,21 @@
 
     <aside
       :class="[
-        'fixed lg:sticky top-0 lg:top-20 inset-y-0 left-0 z-40 lg:z-20 w-64 h-screen lg:h-[calc(100vh-5rem)] bg-white text-slate-700 transform transition-transform duration-200 ease-in-out lg:translate-x-0 flex flex-col justify-between border-r border-slate-200 shadow-xl lg:shadow-none flex-shrink-0 transition-colors',
+        'fixed lg:sticky top-0 lg:top-16 inset-y-0 left-0 z-40 lg:z-20 w-64 h-screen lg:h-[calc(100vh-4rem)] bg-white text-slate-700 transform transition-transform duration-200 ease-in-out lg:translate-x-0 flex flex-col justify-between border-r border-slate-200 shadow-xl lg:shadow-none flex-shrink-0 transition-colors',
         isOpen ? 'translate-x-0' : '-translate-x-full'
       ]"
     >
       <!-- Navigation Menu Header -->
-      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-red-700 to-rose-900 border-2 border-amber-400 flex items-center justify-center shadow-lg shadow-red-500/20 text-amber-300 font-black text-xl tracking-tighter relative overflow-hidden group">
-            <span class="absolute top-0 left-0 right-0 h-1/2 bg-red-500/40"></span>
-            <span class="relative z-10 font-black drop-shadow-md">17</span>
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 via-red-700 to-rose-900 border-2 border-amber-400 flex items-center justify-center shadow-md text-amber-300 font-black text-lg tracking-tighter">
+            17
           </div>
           <div>
-            <h1 class="font-black text-slate-900 leading-tight text-sm tracking-tight flex items-center gap-1">
-              <span>17AN ARENA</span>
+            <h1 class="font-black text-slate-900 leading-tight text-sm tracking-tight">
+              17AN ARENA
             </h1>
-            <p class="text-[10px] text-red-600 uppercase tracking-widest font-extrabold">CHAMPIONSHIP ALL-IN-ONE</p>
+            <p class="text-[10px] text-red-600 uppercase tracking-widest font-extrabold">{{ store.settings.location || 'Bojong Lio 2026' }}</p>
           </div>
         </div>
         <button
@@ -36,71 +35,220 @@
       </div>
 
     <!-- Nav Links List -->
-    <nav class="flex-1 p-3 space-y-2 overflow-y-auto">
-      <div v-for="(group, gIdx) in navGroups" :key="group.title">
-        <!-- Horizontal Ruler before sections (except first) -->
-        <div v-if="gIdx > 0" class="my-3 border-t border-slate-200"></div>
-
-        <!-- Section Header Title -->
-        <div class="px-3 py-1.5 flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
+    <nav class="flex-1 p-3 space-y-4 overflow-y-auto">
+      <!-- 1. Section: TAMPILAN UTAMA & PUBLIK -->
+      <div>
+        <div class="px-3 py-1 flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
           <span class="flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full" :class="group.dotClass || 'bg-red-500'"></span>
-            {{ group.title }}
+            <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+            TAMPILAN PUBLIK
           </span>
-          <span
-            v-if="group.badge"
-            class="px-1.5 py-0.5 rounded text-[9px] font-extrabold"
-            :class="group.badgeClass || 'bg-slate-100 text-slate-600'"
-          >
-            {{ group.badge }}
+          <span class="px-1.5 py-0.2 rounded text-[9px] font-extrabold bg-red-50 text-red-700 border border-red-200">
+            UTAMA
           </span>
         </div>
 
-        <!-- Group Items -->
-        <div class="space-y-1 mt-1">
+        <div class="space-y-1 mt-1.5">
+          <!-- Cabang Perlombaan -->
           <router-link
-            v-for="item in group.items"
+            to="/competitions"
+            @click="$emit('close')"
+            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-all"
+            :class="[
+              $route.path === '/competitions'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+            ]"
+          >
+            <i class="bi bi-trophy-fill text-sm" :class="$route.path === '/competitions' ? 'text-white' : 'text-amber-500'"></i>
+            <span class="truncate">Cabang Perlombaan</span>
+            <span
+              class="ml-auto px-2 py-0.5 text-[10px] font-extrabold rounded-full"
+              :class="$route.path === '/competitions' ? 'bg-white/20 text-white' : 'bg-red-100 text-red-700'"
+            >
+              {{ store.competitions.length }}
+            </span>
+          </router-link>
+
+          <!-- Pendaftaran Peserta -->
+          <router-link
+            to="/registration"
+            @click="$emit('close')"
+            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-all"
+            :class="[
+              $route.path === '/registration'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+            ]"
+          >
+            <i class="bi bi-person-plus-fill text-sm" :class="$route.path === '/registration' ? 'text-white' : 'text-blue-600'"></i>
+            <span class="truncate">Pendaftaran Peserta</span>
+            <span
+              v-if="store.participants.length > 0"
+              class="ml-auto px-2 py-0.5 text-[10px] font-extrabold rounded-full"
+              :class="$route.path === '/registration' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'"
+            >
+              {{ store.participants.length }}
+            </span>
+          </router-link>
+
+          <!-- Panggung Live Arena -->
+          <router-link
+            to="/waiting-lounge"
+            @click="$emit('close')"
+            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-all"
+            :class="[
+              $route.path === '/waiting-lounge' || $route.path === '/competition-board'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+            ]"
+          >
+            <i class="bi bi-broadcast text-sm" :class="$route.path === '/waiting-lounge' ? 'text-white' : 'text-amber-500'"></i>
+            <span class="truncate">Panggung Live Arena</span>
+            <span
+              v-if="store.dashboardStats.waiting > 0"
+              class="ml-auto px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-amber-400 text-slate-900 animate-pulse"
+            >
+              {{ store.dashboardStats.waiting }}
+            </span>
+          </router-link>
+
+          <!-- Hall of Fame -->
+          <router-link
+            to="/hall-of-fame"
+            @click="$emit('close')"
+            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-all"
+            :class="[
+              $route.path === '/hall-of-fame'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+            ]"
+          >
+            <i class="bi bi-stars text-sm" :class="$route.path === '/hall-of-fame' ? 'text-white' : 'text-purple-600'"></i>
+            <span class="truncate">Hall of Fame</span>
+          </router-link>
+
+          <!-- Susunan Panitia (Publik) -->
+          <router-link
+            to="/committee"
+            @click="$emit('close')"
+            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-all"
+            :class="[
+              $route.path === '/committee'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+            ]"
+          >
+            <i class="bi bi-people-fill text-sm" :class="$route.path === '/committee' ? 'text-white' : 'text-indigo-600'"></i>
+            <span class="truncate">Susunan Panitia</span>
+            <span
+              class="ml-auto px-2 py-0.5 text-[10px] font-extrabold rounded-full"
+              :class="$route.path === '/committee' ? 'bg-white/20 text-white' : 'bg-indigo-100 text-indigo-700'"
+            >
+              {{ store.committees.length }}
+            </span>
+          </router-link>
+
+          <!-- Beranda Dashboard -->
+          <router-link
+            to="/"
+            @click="$emit('close')"
+            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-all"
+            :class="[
+              $route.path === '/'
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+            ]"
+          >
+            <i class="bi bi-grid-1x2-fill text-sm"></i>
+            <span class="truncate">Dashboard Utama</span>
+          </router-link>
+        </div>
+      </div>
+
+      <!-- 2. Section: MENU PANITIA (Password Protected: arif_lucu) -->
+      <div class="border-t border-slate-200 pt-3">
+        <div class="px-3 py-1 flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
+          <span class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full" :class="store.isCommitteeUnlocked ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'"></span>
+            MENU PANITIA
+          </span>
+          <button
+            @click="toggleUnlock"
+            class="px-2 py-0.5 rounded text-[9px] font-black uppercase flex items-center gap-1 cursor-pointer transition-colors"
+            :class="store.isCommitteeUnlocked ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-slate-900 text-amber-300'"
+          >
+            <i :class="store.isCommitteeUnlocked ? 'bi bi-unlock-fill' : 'bi bi-lock-fill'"></i>
+            <span>{{ store.isCommitteeUnlocked ? 'Unlocked' : 'Sandi' }}</span>
+          </button>
+        </div>
+
+        <!-- If Committee Locked: Show Prompt Card -->
+        <div v-if="!store.isCommitteeUnlocked" class="mt-2 p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-center">
+          <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center mx-auto text-sm">
+            <i class="bi bi-shield-lock-fill text-amber-600"></i>
+          </div>
+          <p class="text-[11px] font-bold text-slate-700 leading-tight">
+            Menu Panitia Terkunci
+          </p>
+          <p class="text-[10px] text-slate-500">
+            Penilaian, sertifikat, kas, RAB & rundown memerlukan kata sandi panitia.
+          </p>
+          <button
+            @click="store.requestCommitteeAccess()"
+            class="w-full py-1.5 px-3 bg-red-600 hover:bg-red-700 text-white font-black text-xs rounded-lg transition-colors flex items-center justify-center gap-1 shadow-xs"
+          >
+            <i class="bi bi-key-fill"></i>
+            <span>Buka Akses (arif_lucu)</span>
+          </button>
+        </div>
+
+        <!-- If Committee Unlocked: Show Full Administrative List -->
+        <div v-else class="space-y-1 mt-1.5">
+          <router-link
+            v-for="item in committeeItems"
             :key="item.path"
             :to="item.path"
             @click="$emit('close')"
-            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all group"
+            class="flex items-center space-x-2.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
             :class="[
               $route.path === item.path
-                ? 'bg-red-600 text-white shadow-sm shadow-red-500/20'
+                ? 'bg-red-600 text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             ]"
           >
-            <i :class="[item.icon, 'text-sm group-hover:scale-110 transition-transform', $route.path === item.path ? 'text-white' : 'text-slate-500']"></i>
+            <i :class="[item.icon, 'text-xs', $route.path === item.path ? 'text-white' : item.color]"></i>
             <span class="truncate">{{ item.label }}</span>
             <span
-              v-if="item.badge !== undefined && item.badge !== null && item.badge !== ''"
-              class="ml-auto px-2 py-0.5 text-[10px] font-bold rounded-full shrink-0"
-              :class="[
-                $route.path === item.path
-                  ? 'bg-white/20 text-white'
-                  : (item.badgeClass || 'bg-slate-100 text-slate-600')
-              ]"
+              v-if="item.badge"
+              class="ml-auto px-1.5 py-0.2 text-[9px] font-extrabold rounded"
+              :class="$route.path === item.path ? 'bg-white/20 text-white' : item.badgeClass"
             >
               {{ item.badge }}
             </span>
           </router-link>
+
+          <button
+            @click="store.lockCommittee()"
+            class="w-full mt-2 py-1.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors border border-rose-200"
+          >
+            <i class="bi bi-lock-fill"></i>
+            <span>Kunci Menu Panitia</span>
+          </button>
         </div>
       </div>
     </nav>
 
     <!-- Footer System Status Card -->
-    <div class="p-4 border-t border-slate-200">
-      <div class="bg-slate-100 text-slate-800 p-4 rounded-xl space-y-2 border border-slate-200">
+    <div class="p-3 border-t border-slate-200">
+      <div class="bg-slate-50 text-slate-800 p-3 rounded-xl space-y-1.5 border border-slate-200">
         <div class="flex justify-between text-[10px] uppercase font-bold tracking-wider text-slate-500">
-          <span>Offline Mode</span>
-          <span class="text-emerald-600 font-extrabold">Active</span>
+          <span>Sistem Offline</span>
+          <span class="text-emerald-600 font-extrabold">Aktif 100%</span>
         </div>
-        <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-          <div class="h-full w-full bg-emerald-500"></div>
-        </div>
-        <p class="text-[11px] font-medium text-slate-600 flex items-center justify-between">
-          <span>Local Sync Ready</span>
-          <span class="font-mono text-[10px] text-slate-400">v1.0</span>
+        <p class="text-[10px] text-slate-500 flex items-center justify-between">
+          <span>Penyimpanan Lokal</span>
+          <span class="font-mono text-slate-600 font-bold">Bojong Lio</span>
         </p>
       </div>
     </div>
@@ -109,62 +257,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useArenaStore } from '../stores/arenaStore';
-import { t } from '../services/i18n';
 
 defineProps<{ isOpen: boolean }>();
 defineEmits(['close']);
 
 const store = useArenaStore();
 
-const navGroups = computed(() => [
-  {
-    title: 'UTAMA & PANDUAN',
-    dotClass: 'bg-slate-400',
-    items: [
-      { path: '/', label: t('nav.dashboard', 'Dashboard Utama'), icon: 'bi bi-grid-1x2-fill' },
-      { path: '/easy-mode', label: 'Mode Lapangan (Easy Mode)', icon: 'bi bi-lightning-charge-fill', badge: 'EASY', badgeClass: 'bg-amber-400 text-slate-900 font-black animate-pulse border border-amber-500' },
-      { path: '/tutorial', label: t('nav.tutorial', 'Tutorial & Panduan'), icon: 'bi bi-book-half', badge: 'GUIDE', badgeClass: 'bg-emerald-100 text-emerald-800 font-extrabold border border-emerald-200' }
-    ]
-  },
-  {
-    title: 'KHUSUS LOMBA',
-    badge: 'ARENA',
-    badgeClass: 'bg-red-100 text-red-700 border border-red-200',
-    dotClass: 'bg-red-600',
-    items: [
-      { path: '/competitions', label: t('nav.competitions', 'Daftar Cabang Lomba'), icon: 'bi bi-trophy-fill', badge: store.competitions.length },
-      { path: '/registration', label: t('nav.registration', 'Registrasi Peserta'), icon: 'bi bi-person-plus-fill' },
-      { path: '/waiting-lounge', label: t('nav.liveArena', 'Waiting Lounge Live'), icon: 'bi bi-hourglass-split', badge: store.dashboardStats.waiting, badgeClass: 'bg-amber-100 text-amber-800 font-bold border border-amber-200' },
-      { path: '/scoring', label: t('nav.scoring', 'Penilaian Juri (Scoring)'), icon: 'bi bi-calculator-fill' },
-      { path: '/results', label: t('common.details', 'Hasil & Juara Lomba'), icon: 'bi bi-award-fill' },
-      { path: '/resulting-point', label: 'Klasemen Resulting Point', icon: 'bi bi-bar-chart-line-fill' },
-      { path: '/hall-of-fame', label: 'Hall of Fame / Podia', icon: 'bi bi-stars' },
-      { path: '/certificates', label: t('nav.certificates', 'Cetak Sertifikat Juara'), icon: 'bi bi-patch-check-fill' },
-      { path: '/lucky-spin', label: t('nav.doorprize', 'Lucky Spin Doorprize'), icon: 'bi bi-arrow-clockwise' }
-    ]
-  },
-  {
-    title: 'ADMINISTRATIF PANITIA',
-    badge: 'DOKUMEN A4',
-    badgeClass: 'bg-blue-100 text-blue-800 border border-blue-200',
-    dotClass: 'bg-blue-600',
-    items: [
-      { path: '/committee', label: t('nav.committee', 'Panitia & ID Card'), icon: 'bi bi-person-badge-fill', badge: store.committees.length, badgeClass: 'bg-red-100 text-red-700' },
-      { path: '/money', label: 'Keuangan Kas (A4)', icon: 'bi bi-wallet2', badge: 'PDF', badgeClass: 'bg-emerald-100 text-emerald-800 font-extrabold' },
-      { path: '/rab', label: 'RAB Anggaran (A4)', icon: 'bi bi-calculator', badge: 'PDF', badgeClass: 'bg-indigo-100 text-indigo-800 font-extrabold' },
-      { path: '/rundown', label: 'Rundown Acara (A4)', icon: 'bi bi-clock-history', badge: 'PDF', badgeClass: 'bg-amber-100 text-amber-800 font-extrabold' }
-    ]
-  },
-  {
-    title: 'SISTEM & UTILITAS',
-    dotClass: 'bg-purple-600',
-    items: [
-      { path: '/superuser', label: 'Super User Studio', icon: 'bi bi-database-fill-gear', badge: 'SQL', badgeClass: 'bg-purple-100 text-purple-700 font-extrabold border border-purple-200' },
-      { path: '/import-export', label: t('common.export', 'Import / Export Data'), icon: 'bi bi-arrow-down-up' },
-      { path: '/settings', label: t('nav.settings', 'Pengaturan Acara'), icon: 'bi bi-gear-fill' }
-    ]
+function toggleUnlock() {
+  if (store.isCommitteeUnlocked) {
+    store.lockCommittee();
+  } else {
+    store.requestCommitteeAccess();
   }
-]);
+}
+
+const committeeItems = [
+  { path: '/scoring', label: 'Penilaian Juri', icon: 'bi bi-calculator-fill', color: 'text-red-600' },
+  { path: '/results', label: 'Hasil & Juara Lomba', icon: 'bi bi-award-fill', color: 'text-amber-500' },
+  { path: '/resulting-point', label: 'Klasemen Resulting Point', icon: 'bi bi-bar-chart-line-fill', color: 'text-blue-600' },
+  { path: '/certificates', label: 'Cetak Sertifikat Juara (A4)', icon: 'bi bi-patch-check-fill', color: 'text-emerald-600', badge: 'A4', badgeClass: 'bg-emerald-100 text-emerald-800' },
+  { path: '/lucky-spin', label: 'Lucky Spin Doorprize', icon: 'bi bi-arrow-clockwise', color: 'text-rose-500' },
+  { path: '/committee', label: 'Panitia & ID Card (A4)', icon: 'bi bi-person-badge-fill', color: 'text-purple-600', badge: '12', badgeClass: 'bg-purple-100 text-purple-800' },
+  { path: '/money', label: 'Keuangan Kas (A4)', icon: 'bi bi-wallet2', color: 'text-emerald-600', badge: 'Kas', badgeClass: 'bg-emerald-100 text-emerald-800' },
+  { path: '/rab', label: 'RAB Anggaran (A4)', icon: 'bi bi-calculator', color: 'text-indigo-600', badge: 'RAB', badgeClass: 'bg-indigo-100 text-indigo-800' },
+  { path: '/rundown', label: 'Rundown Acara (A4)', icon: 'bi bi-clock-history', color: 'text-amber-600', badge: '21', badgeClass: 'bg-amber-100 text-amber-800' },
+  { path: '/easy-mode', label: 'Mode Lapangan (Easy)', icon: 'bi bi-lightning-charge-fill', color: 'text-amber-500', badge: 'EASY', badgeClass: 'bg-amber-400 text-slate-900 font-black' },
+  { path: '/settings', label: 'Pengaturan & Backup Data', icon: 'bi bi-gear-fill', color: 'text-slate-600' }
+];
 </script>

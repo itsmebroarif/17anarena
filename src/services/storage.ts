@@ -976,6 +976,8 @@ export const DEFAULT_RAB_ITEMS: RabItem[] = FIX_BOJONG_LIO_RAB_ITEMS;
 export const DEFAULT_RUNDOWN_ITEMS: RundownItem[] = FIX_BOJONG_LIO_RUNDOWNS;
 
 // LocalStorage Helper Utilities
+import { FINAL_DATA_2026 } from '../data/final2026Data';
+
 export class StorageService {
   static get<T>(key: string, fallback: T): T {
     try {
@@ -996,27 +998,23 @@ export class StorageService {
   }
 
   static initializeDefaults(force = false): void {
-    const isCleared = localStorage.getItem('17an_cleared_empty_fresh_v5_bojong_lio');
+    const isCleared = localStorage.getItem('17an_final_data_seeded_v1_bojong_lio');
     if (force || !isCleared) {
-      const defaultComps: Competition[] = DEFAULT_17AN_TEMPLATE_COMPETITIONS.map(c => ({
-        ...c,
-        id: 'comp-' + uuidv4().substring(0, 8)
-      }));
-      this.set(STORAGE_KEYS.COMPETITIONS, defaultComps);
-      this.set(STORAGE_KEYS.PARTICIPANTS, []);
-      this.set(STORAGE_KEYS.REGISTRATIONS, []);
-      this.set(STORAGE_KEYS.SCORES, []);
-      this.set(STORAGE_KEYS.WINNERS, []);
-      this.set(STORAGE_KEYS.CERTIFICATES, []);
-      this.set(STORAGE_KEYS.DOORPRIZES, []);
-      this.set(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
-      this.set(STORAGE_KEYS.HISTORY, []);
-      this.set(STORAGE_KEYS.WA_TEMPLATES, DEFAULT_WA_TEMPLATES);
-      this.set(STORAGE_KEYS.COMMITTEES, FIX_BOJONG_LIO_COMMITTEES);
-      this.set(STORAGE_KEYS.MONEY_TRANSACTIONS, FIX_BOJONG_LIO_MONEY_TRANSACTIONS);
-      this.set(STORAGE_KEYS.RAB_ITEMS, FIX_BOJONG_LIO_RAB_ITEMS);
-      this.set(STORAGE_KEYS.RUNDOWN_ITEMS, FIX_BOJONG_LIO_RUNDOWNS);
-      localStorage.setItem('17an_cleared_empty_fresh_v5_bojong_lio', 'true');
+      this.set(STORAGE_KEYS.COMPETITIONS, FINAL_DATA_2026.competitions);
+      this.set(STORAGE_KEYS.PARTICIPANTS, FINAL_DATA_2026.participants);
+      this.set(STORAGE_KEYS.REGISTRATIONS, FINAL_DATA_2026.registrations);
+      this.set(STORAGE_KEYS.SCORES, FINAL_DATA_2026.scores);
+      this.set(STORAGE_KEYS.WINNERS, FINAL_DATA_2026.winners);
+      this.set(STORAGE_KEYS.CERTIFICATES, FINAL_DATA_2026.certificates);
+      this.set(STORAGE_KEYS.DOORPRIZES, FINAL_DATA_2026.doorprizes);
+      this.set(STORAGE_KEYS.SETTINGS, FINAL_DATA_2026.settings);
+      this.set(STORAGE_KEYS.HISTORY, FINAL_DATA_2026.history);
+      this.set(STORAGE_KEYS.WA_TEMPLATES, FINAL_DATA_2026.waTemplates);
+      this.set(STORAGE_KEYS.COMMITTEES, FINAL_DATA_2026.committees);
+      this.set(STORAGE_KEYS.MONEY_TRANSACTIONS, FINAL_DATA_2026.moneyTransactions);
+      this.set(STORAGE_KEYS.RAB_ITEMS, FINAL_DATA_2026.rabItems);
+      this.set(STORAGE_KEYS.RUNDOWN_ITEMS, FINAL_DATA_2026.rundownItems);
+      localStorage.setItem('17an_final_data_seeded_v1_bojong_lio', 'true');
     }
   }
 
