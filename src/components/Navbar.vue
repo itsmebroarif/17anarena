@@ -90,7 +90,21 @@
         <span>Hall of Fame</span>
       </router-link>
 
-      <!-- 5. Susunan Panitia -->
+      <!-- 5. Cetak Sertifikat (Bisa diakses Publik & User) -->
+      <router-link
+        to="/certificates"
+        class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all"
+        :class="[
+          $route.path === '/certificates'
+            ? 'bg-red-600 text-white shadow-xs'
+            : 'text-slate-700 hover:text-slate-900 hover:bg-white/80'
+        ]"
+      >
+        <i class="bi bi-patch-check-fill" :class="$route.path === '/certificates' ? 'text-white' : 'text-emerald-600'"></i>
+        <span>Cetak Sertifikat</span>
+      </router-link>
+
+      <!-- 6. Susunan Panitia -->
       <router-link
         to="/committee"
         class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all"

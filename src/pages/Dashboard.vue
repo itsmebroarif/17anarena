@@ -51,6 +51,14 @@
             <span>Lucky Spin Doorprize</span>
           </router-link>
 
+          <router-link
+            to="/certificates"
+            class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm rounded-lg shadow-md transition-all flex items-center gap-2"
+          >
+            <i class="bi bi-patch-check-fill"></i>
+            <span>Cetak Sertifikat</span>
+          </router-link>
+
           <button
             @click="showA4Modal = true"
             class="px-4 py-2.5 bg-indigo-900/90 hover:bg-indigo-900 text-amber-300 font-extrabold text-sm rounded-lg shadow-md border border-indigo-400/40 transition-all flex items-center gap-2"

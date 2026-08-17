@@ -315,7 +315,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useArenaStore } from '../stores/arenaStore';
 import { Certificate } from '../types';
 import jsPDF from 'jspdf';
@@ -327,6 +327,15 @@ const selectedTitle = ref('ALL');
 const searchQuery = ref('');
 const selectedCertIds = ref<string[]>([]);
 const activeTheme = ref<'merah-putih' | 'gold-classic' | 'royal-navy'>('merah-putih');
+
+onMounted(async () => {
+  if (store.certificates.length === 0 && store.competitions.length > 0) {
+    for (const comp of store.competitions) {
+      await store.generateBatchCertificates(comp.id);
+    }
+  }
+  selectAll();
+});
 
 const themes = [
   { id: 'merah-putih', label: 'Merah Putih Garuda', icon: '🇮🇩' },

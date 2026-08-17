@@ -128,6 +128,21 @@
             <span class="truncate">Hall of Fame</span>
           </router-link>
 
+          <!-- Cetak Sertifikat (Publik) -->
+          <router-link
+            to="/certificates"
+            @click="$emit('close')"
+            class="flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-all"
+            :class="[
+              $route.path === '/certificates'
+                ? 'bg-red-600 text-white shadow-sm'
+                : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+            ]"
+          >
+            <i class="bi bi-patch-check-fill text-sm" :class="$route.path === '/certificates' ? 'text-white' : 'text-emerald-600'"></i>
+            <span class="truncate">Cetak Sertifikat</span>
+          </router-link>
+
           <!-- Susunan Panitia (Publik) -->
           <router-link
             to="/committee"

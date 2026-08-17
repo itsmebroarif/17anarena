@@ -60,7 +60,6 @@ const router = createRouter({
 // Committee password guard for administrative routes
 const committeeProtectedPaths = [
   '/scoring',
-  '/certificates',
   '/money',
   '/rab',
   '/rundown',

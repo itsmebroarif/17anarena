@@ -12,6 +12,15 @@
       <p class="text-xs sm:text-sm text-slate-500">
         Daftar pahlawan perlombaan Kemerdekaan RI yang berhasil meraih podium kejuaraan.
       </p>
+      <div class="pt-2">
+        <router-link
+          to="/certificates"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all"
+        >
+          <i class="bi bi-patch-check-fill"></i>
+          <span>Cetak Semua Sertifikat Juara (A4)</span>
+        </router-link>
+      </div>
     </div>
 
     <!-- Winners Grid per Competition -->
