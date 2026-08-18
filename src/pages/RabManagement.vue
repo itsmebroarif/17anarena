@@ -562,12 +562,14 @@
 
             <!-- Grand Total Footer Table -->
             <table class="w-full border-collapse border-2 border-slate-900 text-xs mt-6 font-bold">
-              <tr class="bg-slate-900 text-white">
-                <td class="p-2.5 uppercase">RANGKUMAN KEUANGAN KAS 17 AGUSTUS 2026:</td>
-                <td class="p-2.5 text-right font-mono text-emerald-300">Pemasukan: Rp {{ totalIncome.toLocaleString('id-ID') }}</td>
-                <td class="p-2.5 text-right font-mono text-amber-300">Pengeluaran: Rp {{ totalExpense.toLocaleString('id-ID') }}</td>
-                <td class="p-2.5 text-right font-mono text-cyan-300">Sisa Uang: Rp {{ balance.toLocaleString('id-ID') }}</td>
-              </tr>
+              <tbody>
+                <tr class="bg-slate-900 text-white">
+                  <td class="p-2.5 uppercase">RANGKUMAN KEUANGAN KAS 17 AGUSTUS 2026:</td>
+                  <td class="p-2.5 text-right font-mono text-emerald-300">Pemasukan: Rp {{ totalIncome.toLocaleString('id-ID') }}</td>
+                  <td class="p-2.5 text-right font-mono text-amber-300">Pengeluaran: Rp {{ totalExpense.toLocaleString('id-ID') }}</td>
+                  <td class="p-2.5 text-right font-mono text-cyan-300">Sisa Uang: Rp {{ balance.toLocaleString('id-ID') }}</td>
+                </tr>
+              </tbody>
             </table>
 
             <p class="text-[10px] text-slate-500 italic mt-4">
